@@ -10,6 +10,9 @@ def fullprint(*args, **kwargs):
     with np.printoptions(threshold=sys.maxsize):
         print(*args, **kwargs)
 
+def prerr(value, err, text="prerr", unit=""):
+    print(text, value, "+-", err, unit)
+
 def bin_normalized(data, n_bins, xlower, xupper):
     rows, cols = data.shape
     bin_size = (xupper - xlower) / n_bins
