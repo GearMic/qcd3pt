@@ -1,0 +1,6 @@
+data/*.aff
+*/*.pyc
+*/__pycache__/*
+*.json
+*.toml
+build
