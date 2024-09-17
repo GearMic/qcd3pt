@@ -3,17 +3,16 @@ import h5py
 import pathlib
 import re
 
-numberRegex = re.compile(r'\d+')
-print(numberRegex)
+numberRegex = re.compile(r'-?\d+')
 
 def text_number_regex(startText):
-    return re.compile(startText+r'\d+_') # regular expression to find t value
+    return re.compile(startText+r'-?\d+(?:[_.]|\Z)') # regular expression to find t value
 
 def extract_number(regex, text):
     # extract ti value
-    match = regex.match(text)
+    match = regex.search(text)
     if match is None:
-        print("ERROR: couldn't find t value in %s" % text)
+        print("ERROR: Regex", regex, "couldn't find value in %s" % text)
 
     numberMatch = numberRegex.findall(match.group())
     return int(numberMatch[0])
@@ -36,9 +35,9 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
     # regular expressions for extracting numbers
     tRegex = text_number_regex('t')
     rStrings = ('x', 'y', 'z')
-    rRegex = (text_number_regex(startString) for startString in rStrings)
+    rRegex = tuple(text_number_regex(startString) for startString in rStrings)
     pStrings = ('px', 'py', 'pz')
-    pRegex = (text_number_regex(startString) for startString in pStrings)
+    pRegex = tuple(text_number_regex(startString) for startString in pStrings)
     nDims = 3
     
     for conf in stream.values():
@@ -46,7 +45,6 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
         for item in conf.items():
             #convert to complex array
             latticeFloat = np.array(item[1]).squeeze()
-            print(latticeFloat.shape)
             latticeComplexShape = latticeFloat.shape
             latticeComplexShape = (*latticeComplexShape[:-1], latticeComplexShape[-1]//2)
 
@@ -57,18 +55,25 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
 
             # corrections based on position in space, momentum and time
             name = item[0]
+
             ti = extract_number(tRegex, name)
             r = np.array(tuple(extract_number(regex, name) for regex in rRegex))
             p = np.array(tuple(extract_number(regex, rawFilename) for regex in pRegex))
             q = np.zeros(nDims) # TODO: extract this from rawFilename
 
-            # roll initial time (ti) to 0
-            latticeComplex = np.roll(latticeComplex, -ti)
+            #print(rawFilename)
+            #print(name)
+            #print(r)
+            #print(p)
+            #print(q)
 
-            # add phase from fourier transform
-            latticeComplex = latticeComplex * np.exp(-1j * (p+q) @ r)
+            ## roll initial time (ti) to 0
+            #latticeComplex = np.roll(latticeComplex, -ti)
 
-            #TODO: work with the different values for different 4-indices
+            ## add phase from fourier transform
+            #latticeComplex = latticeComplex * np.exp(-1j * (p+q) @ r)
+
+            ##TODO: work with the different values for different 4-indices
 
 
 
