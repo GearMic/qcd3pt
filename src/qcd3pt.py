@@ -46,9 +46,14 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
         for item in conf.items():
             #convert to complex array
             latticeFloat = np.array(item[1]).squeeze()
-            latticeComplex = np.empty(len(latticeFloat)//2, np.cdouble)
-            latticeComplex.real = latticeFloat[0::2]
-            latticeComplex.imag = latticeFloat[1::2]
+            print(latticeFloat.shape)
+            latticeComplexShape = latticeFloat.shape
+            latticeComplexShape = (*latticeComplexShape[:-1], latticeComplexShape[-1]//2)
+
+            #latticeComplex = np.empty(len(latticeFloat)//2, np.cdouble)
+            latticeComplex = np.empty(latticeComplexShape, np.cdouble)
+            latticeComplex.real = latticeFloat[:, :, 0::2]
+            latticeComplex.imag = latticeFloat[:, :, 1::2]
 
             # corrections based on position in space, momentum and time
             name = item[0]
