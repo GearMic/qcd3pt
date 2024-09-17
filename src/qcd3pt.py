@@ -40,9 +40,9 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
     pRegex = tuple(text_number_regex(startString) for startString in pStrings)
     nDims = 3
     
-    for conf in stream.values():
+    for j, conf in zip(range(len(stream.values())), stream.values()):
         lattices = []
-        for item in conf.items():
+        for i, item in zip(range(len(conf.items())), conf.items()):
             #convert to complex array
             latticeFloat = np.array(item[1]).squeeze()
             latticeComplexShape = latticeFloat.shape
@@ -55,27 +55,31 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
 
             # corrections based on position in space, momentum and time
             name = item[0]
-
             ti = extract_number(tRegex, name)
             r = np.array(tuple(extract_number(regex, name) for regex in rRegex))
             p = np.array(tuple(extract_number(regex, rawFilename) for regex in pRegex))
             q = np.zeros(nDims) # TODO: extract this from rawFilename
 
-            #print(rawFilename)
-            #print(name)
-            #print(r)
-            #print(p)
-            #print(q)
-
             ## roll initial time (ti) to 0
-            #latticeComplex = np.roll(latticeComplex, -ti)
-
+            latticeComplex = np.roll(latticeComplex, -ti, 2)
             ## add phase from fourier transform
-            #latticeComplex = latticeComplex * np.exp(-1j * (p+q) @ r)
+            phaseFactor = np.exp(-1j * ((p+q) @ r))
+            latticeComplex = latticeComplex * phaseFactor
+            lattices.append(latticeComplex)
 
             ##TODO: work with the different values for different 4-indices
+            #if i == 0 and j == 0:
+            #    print(ti)
 
+        confs_list.append(np.mean(np.array(lattices), 0))
 
+    confs = np.array(confs_list)
+
+    # save np array
+    with open(arrPath, 'wb') as arrFile:
+        np.save(arrFile, confs)
+
+    return confs
 
 """
         lattices = []
@@ -95,7 +99,6 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
             # add rolled array to the list
             lattices.append(np.roll(latticeComplex, -t))
 
-        confs_list.append(np.mean(np.array(lattices), 0))
         # confs_list.append(np.array(lattices)[5])
 
     confs = np.array(confs_list)
