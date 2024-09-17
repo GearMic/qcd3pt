@@ -80,33 +80,3 @@ def load_mean_data(rawFilename, arrFilename, forceGenerate=False):
         np.save(arrFile, confs)
 
     return confs
-
-"""
-        lattices = []
-        for item in conf.items():
-            tMatch = tRegex.match(item[0])
-            # extract t value
-            if tMatch is None:
-                print("ERROR: couldn't find t value in %s" % item[0])
-            t = int(tMatch.group()[1:-1])
-
-            #convert to complex array
-            latticeFloat = np.array(item[1]).squeeze()
-            latticeComplex = np.empty(len(latticeFloat)//2, np.cdouble)
-            latticeComplex.real = latticeFloat[0::2]
-            latticeComplex.imag = latticeFloat[1::2]
-
-            # add rolled array to the list
-            lattices.append(np.roll(latticeComplex, -t))
-
-        # confs_list.append(np.array(lattices)[5])
-
-    confs = np.array(confs_list)
-
-    # save np array
-    with open(arrPath, 'wb') as arrFile:
-        np.save(arrFile, confs)
-
-    return confs
-
-"""
