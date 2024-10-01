@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-import pandas as pd
 
 from qcd3pt import *
 from helpers import *
@@ -24,6 +22,9 @@ def plot_confs(confs, filenames):
             #ax.plot(time, dataPlot, 'x', label='$\\nu=%i$'%nu)
             ax.errorbar(time, dataPlot, dataPlotErr, fmt='x', label='$\\nu=%i$'%nu)
 
+        ax.set_xlabel(r'$t$')
+        ax.set_ylabel(r'$C_{\mu\nu}^{(3)}(t)$')
+        ax.set_title('$\\mu=%i$' % mu)
         ax.legend()
         fig.savefig(filenames[mu])
     #ax.set_ylim(-0.0005, 0.0015)

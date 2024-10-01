@@ -1,49 +1,78 @@
-\documentclass[10pt]{article}
-\usepackage[a4paper, left=1.5cm, right=1.5cm, top=3.5cm]{geometry}
+%% packages
+\documentclass{article}
+\usepackage[a4paper, left=2.0cm, right=2.0cm, top=3.5cm]{geometry}
 \usepackage[ngerman]{babel}
 \usepackage{graphicx}
-%\usepackage{multicol}
-%\usepackage{amssymb}
-%\usepackage{titlesec}
-%\usepackage{wrapfig}
-%\usepackage{blindtext}
-%\usepackage{lipsum}
-%\usepackage{caption}
-%\usepackage{listings}
-%\usepackage{fancyhdr}
-%\usepackage{nopageno}
-%\usepackage{authblk}
-%\usepackage{amsmath} % tons of math stuff
-%\usepackage{mathtools} % e.g. alignment within matrix
-%\usepackage{bm} % provides shorthand for bold in math mode
-%\usepackage[ISO]{diffcoeff}
-%\usepackage{xcolor}
-%\usepackage{csquotes} % e.g. provides \enquote
-%\fancyhf[]{}
-\usepackage{booktabs}
-\usepackage{atbegshi}% http://ctan.org/pkg/atbegshi
+\usepackage{multicol}
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{wrapfig}
+\usepackage{blindtext}
+\usepackage{lipsum}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{nopageno}
+\usepackage{authblk}
+\usepackage{amsmath} % tons of math stuff
+\usepackage{esdiff} % provides \diff
+\usepackage{xcolor}
+\usepackage{csquotes} % e.g. provides \enquote
+\usepackage{siunitx} % units
+\usepackage{xcolor} % colored text
+\usepackage{subcaption}
 
-%\AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}} % remove empty page
-%\addtocounter{page}{-1}
+\graphicspath{{plot/}}
 
+% own commands
+% \newcommand{\rarr}{$\to\,$} %A$\,\to\,$B
+\newcommand{\defc}{black}
+\newcommand{\colorT}[2][blue]{\color{#1}{#2}\color{\defc}}
+\newcommand{\redq}{\color{red}(?)\color{\defc}}
+\newcommand{\question}[1]{\colorT[purple]{\textbf{(#1)}}}
+\newcommand{\todo}[1]{\colorT[red]{\textbf{(#1)}}}
+\newcommand{\mr}{\mathrm}
+
+%% document
 \begin{document}
 
+%\pagenumbering{gobble}
+%\maketitle
+%\tableofcontents
+%\newpage
+\pagenumbering{arabic}
 
-%\begin{Figure}
-%    \includegraphics[width=1.0\textwidth, angle=0]{stability.pdf}
-%\caption{
-%    Stabilität in Abhängigkeit der Unteren Grenze des Fit-Intervalls
-%    und Vergleich mit der effektiven Masse.
-%}
-%\label{fig:stability}
-%\end{Figure}
+\pagestyle{fancy}
+%\fancyhead[R]{\thepage}
+%\fancyhead[L]{\leftmark}
 
-%\begin{center}
-%    \include{example_results}
-%    \caption{
-%        Fit-Parameter. $\delta X$: Fehler, berechnet mit Bootstrapping. $\overline X_B$: Bootstrap-Mittelwert.
-%    }
-%    \label{tab:results}
-%\end{center}
+Für ein festes $\mu$ werden die (über alle Konfigurationen gemittelten) 3pt-Funktionen für alle 4 möglichen $\nu$ gegen die Zeit aufgetragen: Abb. \ref{fig:3pt}.
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\textwidth]{confs_mu0}
+        \subcaption{$\mu=0$}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{confs_mu1}
+        \subcaption{$\mu=1$}
+    \end{subfigure}
+
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{confs_mu2}
+        \subcaption{$\mu=2$}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{confs_mu3}
+        \subcaption{$\mu=3$}
+    \end{subfigure}
+    \caption{Plots der 3pt-Funktionen.}
+    \label{fig:3pt}
+\end{figure}
 
 \end{document}

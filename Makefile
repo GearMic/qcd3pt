@@ -5,5 +5,5 @@ build: src/main.py
 	touch build
 
 paper: build latex/main.tex
-	cp -t latex plot/*.pdf
+	#cp -t latex plot/*.pdf
 	pdflatex -interaction=nonstopmode -output-directory=./latex latex/main.tex 
