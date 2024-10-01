@@ -19,9 +19,10 @@ def plot_confs(confs, filenames):
         fig, ax = plt.subplots()
         for nu in range(ndim):
             dataPlot = data[mu, nu, :].real
-            dataPlotErr = data[mu, nu, :].real
+            dataPlotErr = dataErr[mu, nu, :].real
 
-            ax.plot(time, dataPlot, 'x', label='$\\nu=%i$'%nu)
+            #ax.plot(time, dataPlot, 'x', label='$\\nu=%i$'%nu)
+            ax.errorbar(time, dataPlot, dataPlotErr, fmt='x', label='$\\nu=%i$'%nu)
 
         ax.legend()
         fig.savefig(filenames[mu])
